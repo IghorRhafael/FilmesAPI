@@ -23,9 +23,11 @@ public class FilmeController : Controller
     /// <summary>
     /// Guarda um filme
     /// </summary>
-    /// <param name="filmeDto"></param>
-    /// <returns></returns>
+    /// <param name="filmeDto">Objeto com os campos necessários para criação de um filme</param>
+    /// <returns>IActionResult</returns>
+    /// <response code="201">Caso inserção seja feita com sucesso</response>
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     public IActionResult AddFilme([FromBody] CreateFilmeDto filmeDto)
     {
         Filme filme = _mapper.Map<Filme>(filmeDto);
