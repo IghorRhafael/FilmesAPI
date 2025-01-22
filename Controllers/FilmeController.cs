@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FilmesAPI.Controllers;
 
+/// <summary>
+/// Controller filme
+/// </summary>
 [ApiController]
 [Route("[controller]")]
 public class FilmeController : Controller
@@ -14,6 +17,11 @@ public class FilmeController : Controller
     private FilmeContext _context;
     private IMapper _mapper;
 
+    /// <summary>
+    /// Construtor
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="mapper"></param>
     public FilmeController(FilmeContext context, IMapper mapper)
     {
         _context = context;
@@ -37,11 +45,11 @@ public class FilmeController : Controller
     }
 
     /// <summary>
-    /// Retorna lista de todos os filmes com paginação
+    /// Retorna uma lista de filmes com paginação
     /// </summary>
-    /// <param name="skip"></param>
-    /// <param name="take"></param>
-    /// <returns></returns>
+    /// <param name="skip">Número de filmes a pular</param>
+    /// <param name="take">Número de filmes a retornar</param>
+    /// <returns>Lista de filmes</returns>
     [HttpGet]
     public IEnumerable<ReadFilmeDto> GetFilme([FromQuery] int skip = 0, [FromQuery] int take = 10)
     {
@@ -50,25 +58,29 @@ public class FilmeController : Controller
     }
 
     /// <summary>
-    /// Consulta filme por ID
+    /// Retorna um filme pelo ID
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    /// <param name="id">ID do filme</param>
+    /// <returns>IActionResult</returns>
+    /// <response code="200">Caso o filme seja encontrado</response>
+    /// <response code="404">Caso o filme não seja encontrado</response>
     [HttpGet("{id}")]
     public IActionResult GetFilmeByID(int id)
     {
         var filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
-        if (filme == null) NotFound();//caso filme não exista retorna 404
+        if (filme == null) return NotFound();//caso filme não exista retorna 404
         var filmeDto = _mapper.Map<ReadFilmeDto>(filme);
         return Ok(filmeDto);
     }
 
     /// <summary>
-    /// Atualiza todos os campos do filme
+    /// Atualiza um filme pelo ID
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="filmeDto"></param>
-    /// <returns></returns>
+    /// <param name="id">ID do filme</param>
+    /// <param name="filmeDto">Objeto com os campos necessários para atualização de um filme</param>
+    /// <returns>IActionResult</returns>
+    /// <response code="204">Caso a atualização seja feita com sucesso</response>
+    /// <response code="404">Caso o filme não seja encontrado</response>
     [HttpPut("{id}")]
     public IActionResult UpdateFilme(int id, [FromBody] UpdateFilmeDto filmeDto)
     {
@@ -80,11 +92,13 @@ public class FilmeController : Controller
     }
 
     /// <summary>
-    /// Atualiza somente o campo enviado
+    /// Atualiza parcialmente um filme pelo ID
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="patch"></param>
-    /// <returns></returns>
+    /// <param name="id">ID do filme</param>
+    /// <param name="patch">Objeto com os campos a serem atualizados</param>
+    /// <returns>IActionResult</returns>
+    /// <response code="204">Caso a atualização seja feita com sucesso</response>
+    /// <response code="404">Caso o filme não seja encontrado</response>
     [HttpPatch("{id}")]
     public IActionResult UpdateFilmeParcial(int id, JsonPatchDocument<UpdateFilmeDto> patch)
     {
@@ -105,6 +119,13 @@ public class FilmeController : Controller
         return NoContent();
     }
 
+    /// <summary>
+    /// Deleta um filme pelo ID
+    /// </summary>
+    /// <param name="id">ID do filme a ser deletado</param>
+    /// <returns>IActionResult</returns>
+    /// <response code="204">Caso a deleção seja feita com sucesso</response>
+    /// <response code="404">Caso o filme não seja encontrado</response>
     [HttpDelete("{id}")]
     public IActionResult DeleteFilme(int id)
     {
