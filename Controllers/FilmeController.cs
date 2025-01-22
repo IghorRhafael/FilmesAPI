@@ -41,10 +41,10 @@ public class FilmeController : Controller
     /// <param name="take"></param>
     /// <returns></returns>
     [HttpGet]
-    public IEnumerable<Filme> GetFilme([FromQuery] int skip = 0, [FromQuery] int take = 10)
+    public IEnumerable<ReadFilmeDto> GetFilme([FromQuery] int skip = 0, [FromQuery] int take = 10)
     {
         //retorna a lista de filmes dentro de um intervalo para paginação
-        return _context.Filmes.Skip(skip).Take(take);
+        return _mapper.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(skip).Take(take));
     }
 
     /// <summary>
@@ -56,7 +56,9 @@ public class FilmeController : Controller
     public IActionResult GetFilmeByID(int id)
     {
         var filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
-        return filme == null ? NotFound() : Ok(filme);//caso filme não exista retorna 404
+        if (filme == null) NotFound();//caso filme não exista retorna 404
+        var filmeDto = _mapper.Map<ReadFilmeDto>(filme);
+        return Ok(filmeDto);
     }
 
     /// <summary>
@@ -68,8 +70,8 @@ public class FilmeController : Controller
     [HttpPut("{id}")]
     public IActionResult UpdateFilme(int id, [FromBody] UpdateFilmeDto filmeDto)
     {
-        var filme = _context.Filmes.FirstOrDefault(filme =>filme.Id == id);
-        if(filme == null) return NotFound();
+        var filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
+        if (filme == null) return NotFound();
         _mapper.Map(filmeDto, filme);
         _context.SaveChanges();
         return NoContent();
@@ -91,12 +93,23 @@ public class FilmeController : Controller
         patch.ApplyTo(filmeParaAtualizar, ModelState);
 
         //valida que os dados passado corresponde a estrutura Dto
-        if(!TryValidateModel(filmeParaAtualizar))
+        if (!TryValidateModel(filmeParaAtualizar))
         {
             return ValidationProblem(ModelState);
         }
 
         _mapper.Map(filmeParaAtualizar, filme);
+        _context.SaveChanges();
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeleteFilme(int id)
+    {
+        var filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
+        if (filme == null) return NotFound();
+
+        _context.Filmes.Remove(filme);
         _context.SaveChanges();
         return NoContent();
     }
