@@ -22,5 +22,11 @@ public class FilmeContext : DbContext
     /// Conjunto de dados que representa os filmes no banco de dados.
     /// </summary>
     public DbSet<Filme> Filmes { get; set; }
+    /// <summary>
+    /// Conjunto de dados que representa os cinemas no banco de dados.
+    /// </summary>
+    public DbSet<Cinema> Cinemas { get; set; }
+
+
 
 }

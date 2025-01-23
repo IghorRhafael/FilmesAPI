@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FilmesAPI.Data;
 using FilmesAPI.Data.Dtos;
+using FilmesAPI.Helper;
 using FilmesAPI.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -67,10 +68,14 @@ public class FilmeController : Controller
     [HttpGet("{id}")]
     public IActionResult GetFilmeByID(int id)
     {
-        var filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
-        if (filme == null) return NotFound();//caso filme não exista retorna 404
-        var filmeDto = _mapper.Map<ReadFilmeDto>(filme);
-        return Ok(filmeDto);
+        var filme = _context.Filmes.GetById(id);
+        if (filme is not null)
+        {
+            var filmeDto = _mapper.Map<ReadFilmeDto>(filme);
+            return Ok(filmeDto);
+        }
+        return NotFound();
+
     }
 
     /// <summary>
@@ -84,7 +89,7 @@ public class FilmeController : Controller
     [HttpPut("{id}")]
     public IActionResult UpdateFilme(int id, [FromBody] UpdateFilmeDto filmeDto)
     {
-        var filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
+        var filme = _context.Filmes.GetById(id);
         if (filme == null) return NotFound();
         _mapper.Map(filmeDto, filme);
         _context.SaveChanges();
@@ -102,7 +107,7 @@ public class FilmeController : Controller
     [HttpPatch("{id}")]
     public IActionResult UpdateFilmeParcial(int id, JsonPatchDocument<UpdateFilmeDto> patch)
     {
-        var filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
+        var filme = _context.Filmes.GetById(id);
         if (filme == null) return NotFound();
 
         var filmeParaAtualizar = _mapper.Map<UpdateFilmeDto>(filme);
@@ -129,7 +134,7 @@ public class FilmeController : Controller
     [HttpDelete("{id}")]
     public IActionResult DeleteFilme(int id)
     {
-        var filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
+        var filme = _context.Filmes.GetById(id);
         if (filme == null) return NotFound();
 
         _context.Filmes.Remove(filme);
