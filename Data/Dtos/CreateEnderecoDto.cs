@@ -19,21 +19,4 @@ public class CreateEnderecoDto
     [Required(ErrorMessage = "O campo Número é obrigatório")]
     public required int Numero { get; set; }
 
-    /// <summary>
-    /// Bairro do endereço.
-    /// </summary>
-    [Required(ErrorMessage = "O campo Bairro é obrigatório")]
-    public required string Bairro { get; set; }
-
-    /// <summary>
-    /// Cidade do endereço.
-    /// </summary>
-    [Required(ErrorMessage = "O campo Cidade é obrigatório")]
-    public required string Cidade { get; set; }
-
-    /// <summary>
-    /// Estado do endereço.
-    /// </summary>
-    [Required(ErrorMessage = "O campo Estado é obrigatório")]
-    public required string Estado { get; set; }
 }

@@ -14,4 +14,9 @@ public class ReadCinemaDto
     /// Nome do cinema.
     /// </summary>
     public required string Nome { get; set; }
+
+    /// <summary>
+    /// Endereço do cinema.
+    /// </summary>
+    public ReadEnderecoDto Endereco { get; set; }
 }

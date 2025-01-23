@@ -4,6 +4,7 @@ using FilmesAPI.Data;
 using FilmesAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using FilmesAPI.Helper;
+using Microsoft.EntityFrameworkCore;
 
 namespace FilmesAPI.Controllers;
 
@@ -36,11 +37,18 @@ public class CinemaController : ControllerBase
     [HttpPost]
     public IActionResult AddCinema([FromBody] CreateCinemaDto cinemaDto)
     {
-        Cinema cinema = _mapper.Map<Cinema>(cinemaDto);
-        _context.Cinemas.Add(cinema);
-        _context.SaveChanges();
-        //return CreatedAtAction(nameof(GetCinemaById), new { id = cinema.Id }, cinema);
-        return CreatedAtRoute(nameof(GetCinemaById), new { Id = cinema.Id }, cinemaDto);
+        try
+        {
+            Cinema cinema = _mapper.Map<Cinema>(cinemaDto);
+            _context.Cinemas.Add(cinema);
+            _context.SaveChanges();
+            //return CreatedAtAction(nameof(GetCinemaById), new { id = cinema.Id }, cinema);
+            return CreatedAtAction(nameof(GetCinemaById), new { Id = cinema.Id }, cinemaDto);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     /// <summary>
@@ -50,10 +58,17 @@ public class CinemaController : ControllerBase
     /// <param name="take">Número de cinemas a retornar</param>
     /// <returns>Lista de cinemas</returns>
     [HttpGet]
-    public IEnumerable<ReadFilmeDto> GetCinemas([FromQuery] int skip = 0, [FromQuery] int take = 10)
+    public IEnumerable<ReadCinemaDto> GetCinemas([FromQuery] int skip = 0, [FromQuery] int take = 10)
     {
         //retorna a lista de cinemas dentro de um intervalo para paginação
-        return _mapper.Map<List<ReadFilmeDto>>(_context.Cinemas.Skip(skip).Take(take));
+        var cinemas = _context.Cinemas
+                        .Include(c => c.Endereco) // Certifique-se de incluir a propriedade de navegação
+                        .Skip(skip)
+                        .Take(take)
+                        .ToList();
+
+        return _mapper.Map<List<ReadCinemaDto>>(cinemas);
+
     }
 
     /// <summary>

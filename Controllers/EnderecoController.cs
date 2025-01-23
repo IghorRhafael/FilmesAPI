@@ -34,13 +34,13 @@ public class EnderecoController : ControllerBase
     /// <param name="enderecoDto">Dados do endereço a ser criado.</param>
     /// <returns>Resposta HTTP indicando o resultado da operação.</returns>
     [HttpPost]
-    public IActionResult CreateEndereco([FromBody] CreateEnderecoDto enderecoDto)
+    public IActionResult AddEndereco([FromBody] CreateEnderecoDto enderecoDto)
     {
         var endereco = _mapper.Map<Endereco>(enderecoDto);
         _context.Add(endereco);
         _context.SaveChanges();
         var enderecoReadDto = _mapper.Map<ReadEnderecoDto>(endereco);
-        return CreatedAtRoute(nameof(GetEnderecoById), new { endereco.Id }, enderecoReadDto);
+        return CreatedAtAction(nameof(GetEnderecoById), new { endereco.Id }, enderecoReadDto);
     }
 
     /// <summary>

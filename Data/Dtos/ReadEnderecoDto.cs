@@ -15,18 +15,4 @@ public class ReadEnderecoDto
     /// </summary>
     public int Numero { get; set; }
 
-    /// <summary>
-    /// Bairro do endereço.
-    /// </summary>
-    public string Bairro { get; set; }
-
-    /// <summary>
-    /// Cidade do endereço.
-    /// </summary>
-    public string Cidade { get; set; }
-
-    /// <summary>
-    /// Estado do endereço.
-    /// </summary>
-    public string Estado { get; set; }
 }

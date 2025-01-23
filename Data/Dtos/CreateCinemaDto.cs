@@ -12,4 +12,9 @@ public class CreateCinemaDto
     /// </summary>
     [Required(ErrorMessage = "O campo Nome é obrigatório.")]
     public required string Nome { get; set; }
+
+    /// <summary>
+    /// Identificador do endereço do cinema.
+    /// </summary>
+    public int EnderecoId { get; set; }
 }
