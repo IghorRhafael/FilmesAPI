@@ -17,5 +17,7 @@ public class SessaoProfile : Profile
         CreateMap<CreateSessaoDto, Sessao>();
         //CreateMap<UpdateSessaoDto, Sessao>();
         CreateMap<Sessao, ReadSessaoDto>();
+            //.ForMember(sessaoDto => sessaoDto.Filme, opt => opt.MapFrom(sessao => sessao.Filme));
+            //.ForMember(sessaoDto => sessaoDto.Cinema, opt => opt.MapFrom(sessao => sessao.Cinema));
     }
 }

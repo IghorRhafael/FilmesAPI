@@ -5,20 +5,16 @@
 /// </summary>
 public class ReadSessaoDto
 {
+
     /// <summary>
-    /// Identificador da sessão.
+    /// Filme relacionado a sessao
     /// </summary>
-    public int Id { get; set; }
+    public int? FilmeId { get; set; }
 
-    // /// <summary>
-    // /// Identificador do filme.
-    // /// </summary>
-    // public int FilmeId { get; set; }
-
-    // /// <summary>
-    // /// Identificador do cinema.
-    // /// </summary>
-    // public int CinemaId { get; set; }
+    /// <summary>
+    /// Cinema relacionado a sessao
+    /// </summary>
+    public int? CinemaId { get; set; }
 
     // /// <summary>
     // /// Horário de início da sessão.

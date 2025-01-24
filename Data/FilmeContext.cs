@@ -19,6 +19,31 @@ public class FilmeContext : DbContext
     }
 
     /// <summary>
+    /// Configura o modelo de dados para o contexto do banco de dados.
+    /// Faz relacionamento n:n entre filmes e cinemas.
+    /// </summary>
+    /// <param name="builder"></param>
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.Entity<Sessao>()
+            .HasKey(sessao => new {sessao.FilmeId, sessao.CinemaId });
+
+        builder.Entity<Sessao>().HasOne(sessao => sessao.Cinema)
+            .WithMany(cinema => cinema.Sessoes)
+            .HasForeignKey(sessao => sessao.CinemaId);
+
+        builder.Entity<Sessao>().HasOne(sessao => sessao.Filme)
+            .WithMany(filme => filme.Sessoes)
+            .HasForeignKey(sessao => sessao.FilmeId);
+
+        //Entity Endereço não faz delete em modo cascata
+        builder.Entity<Endereco>()
+            .HasOne(endereco => endereco.Cinema)
+            .WithOne(cinema => cinema.Endereco)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+
+    /// <summary>
     /// Conjunto de dados que representa os filmes no banco de dados.
     /// </summary>
     public DbSet<Filme> Filmes { get; set; }

@@ -40,7 +40,7 @@ public class SessaoController : ControllerBase
         var sessaoModel = _mapper.Map<Sessao>(sessaoDto);
         _context.Sessoes.Add(sessaoModel);
         _context.SaveChanges();
-        return CreatedAtAction(nameof(GetSessaoById), new { Id = sessaoModel.Id }, sessaoModel);
+        return CreatedAtAction(nameof(GetSessaoById), new { filmeID = sessaoModel.FilmeId, cinemaId = sessaoModel.CinemaId  }, sessaoModel);
     }
 
     /// <summary>
@@ -62,12 +62,13 @@ public class SessaoController : ControllerBase
     /// <summary>
     /// Obtém uma sessão pelo seu identificador.
     /// </summary>
-    /// <param name="id">Identificador da sessão.</param>
+    /// <param name="filmeId">Identificador do filme.</param>
+    /// <param name="cinemaId">Identificador do cinema.</param>
     /// <returns>Objeto DTO contendo os dados da sessão encontrada.</returns>
-    [HttpGet("{id}", Name = "GetSessaoById")]
-    public ActionResult<ReadSessaoDto> GetSessaoById(int id)
+    [HttpGet("{filmeId}/{cinemaId}", Name = "GetSessaoById")]
+    public ActionResult<ReadSessaoDto> GetSessaoById(int filmeId, int cinemaId)
     {
-        var sessao = _context.Sessoes.GetById(id);
+        var sessao = _context.Sessoes.FirstOrDefault(sessao => sessao.FilmeId == filmeId && sessao.CinemaId == cinemaId);
         if (sessao == null)
         {
             return NotFound("Sessão não encontrada.");
