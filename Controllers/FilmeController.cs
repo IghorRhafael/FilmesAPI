@@ -5,6 +5,7 @@ using FilmesAPI.Helper;
 using FilmesAPI.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FilmesAPI.Controllers;
 
@@ -55,7 +56,12 @@ public class FilmeController : Controller
     public IEnumerable<ReadFilmeDto> GetFilme([FromQuery] int skip = 0, [FromQuery] int take = 10)
     {
         //retorna a lista de filmes dentro de um intervalo para paginação
-        return _mapper.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(skip).Take(take));
+        var filmes = _context.Filmes
+            .Skip(skip)
+            .Take(take)
+            .ToList();
+
+        return _mapper.Map<List<ReadFilmeDto>>(filmes);
     }
 
     /// <summary>

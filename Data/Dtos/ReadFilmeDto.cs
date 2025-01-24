@@ -26,4 +26,9 @@ public class ReadFilmeDto
     /// Data e hora da consulta.
     /// </summary>
     public DateTime DataConsulta { get; set; } = DateTime.Now;
+
+    /// <summary>
+    /// Sessões do filme.
+    /// </summary>
+    public ICollection<ReadSessaoDto>? Sessoes { get; set; }
 }

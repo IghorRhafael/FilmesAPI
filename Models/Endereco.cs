@@ -25,7 +25,7 @@ public class Endereco
     public required string Numero { get; set; }
 
     /// <summary>
-    /// Complemento do endereço.
+    /// Cinema no endereço
     /// </summary>
-    public virtual Cinema Cinema { get; set; }
+    public virtual Cinema? Cinema { get; set; }
 }

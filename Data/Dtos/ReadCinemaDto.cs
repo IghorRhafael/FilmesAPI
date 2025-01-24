@@ -18,5 +18,10 @@ public class ReadCinemaDto
     /// <summary>
     /// Endereço do cinema.
     /// </summary>
-    public ReadEnderecoDto Endereco { get; set; }
+    public required ReadEnderecoDto Endereco { get; set; }
+
+    /// <summary>
+    /// Sessões do cinema.
+    /// </summary>
+    public ICollection<ReadSessaoDto>? Sessoes { get; set; }
 }

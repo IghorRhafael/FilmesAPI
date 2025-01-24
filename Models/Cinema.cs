@@ -28,5 +28,10 @@ public class Cinema
     /// <summary>
     /// Endereço do cinema.
     /// </summary>
-    public virtual Endereco Endereco { get; set; }
+    public required virtual Endereco Endereco { get; set; }
+
+    /// <summary>
+    /// Sessões do cinema.
+    /// </summary>
+    public virtual ICollection<Sessao>? Sessoes { get; set; }
 }

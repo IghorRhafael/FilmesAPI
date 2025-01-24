@@ -8,7 +8,7 @@ public class ReadEnderecoDto
     /// <summary>
     /// Logradouro do endereço.
     /// </summary>
-    public string Logradouro { get; set; }
+    public required string Logradouro { get; set; }
 
     /// <summary>
     /// Número do endereço.

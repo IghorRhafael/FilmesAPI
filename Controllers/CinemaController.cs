@@ -62,7 +62,6 @@ public class CinemaController : ControllerBase
     {
         //retorna a lista de cinemas dentro de um intervalo para paginação
         var cinemas = _context.Cinemas
-                        .Include(c => c.Endereco) // Certifique-se de incluir a propriedade de navegação
                         .Skip(skip)
                         .Take(take)
                         .ToList();

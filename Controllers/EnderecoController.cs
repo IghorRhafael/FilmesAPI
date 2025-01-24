@@ -39,8 +39,7 @@ public class EnderecoController : ControllerBase
         var endereco = _mapper.Map<Endereco>(enderecoDto);
         _context.Add(endereco);
         _context.SaveChanges();
-        var enderecoReadDto = _mapper.Map<ReadEnderecoDto>(endereco);
-        return CreatedAtAction(nameof(GetEnderecoById), new { endereco.Id }, enderecoReadDto);
+        return CreatedAtAction(nameof(GetEnderecoById), new { endereco.Id }, endereco);
     }
 
     /// <summary>

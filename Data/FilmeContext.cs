@@ -33,5 +33,8 @@ public class FilmeContext : DbContext
     /// </summary>
     public DbSet<Endereco> Enderecos { get; set; }
 
-
+    /// <summary>
+    /// Conjunto de dados que representa as sessões no banco de dados.
+    /// </summary>
+    public DbSet<Sessao> Sessoes { get; set; }
 }
