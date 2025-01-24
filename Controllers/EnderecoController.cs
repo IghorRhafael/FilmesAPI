@@ -33,6 +33,7 @@ public class EnderecoController : ControllerBase
     /// </summary>
     /// <param name="enderecoDto">Dados do endereço a ser criado.</param>
     /// <returns>Resposta HTTP indicando o resultado da operação.</returns>
+    /// <response code="201">Caso inserção seja feita com sucesso</response>
     [HttpPost]
     public IActionResult AddEndereco([FromBody] CreateEnderecoDto enderecoDto)
     {
@@ -47,6 +48,8 @@ public class EnderecoController : ControllerBase
     /// </summary>
     /// <param name="id">ID do endereço.</param>
     /// <returns>Resposta HTTP com os dados do endereço.</returns>
+    /// <response code="200">Caso o esdereço seja encontrado</response>
+    /// <response code="404">Caso o esdereço não seja encontrado</response>
     [HttpGet("{id}", Name = "GetById")]
     public IActionResult GetEnderecoById(int id)
     {

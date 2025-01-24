@@ -34,6 +34,7 @@ public class SessaoController : ControllerBase
     /// </summary>
     /// <param name="sessaoDto">Objeto DTO contendo os dados da sessão a ser criada.</param>
     /// <returns>Resposta HTTP indicando o resultado da operação.</returns>
+    /// <response code="201">Caso inserção seja feita com sucesso</response>
     [HttpPost]
     public IActionResult AddSessao(CreateSessaoDto sessaoDto)
     {
@@ -65,6 +66,8 @@ public class SessaoController : ControllerBase
     /// <param name="filmeId">Identificador do filme.</param>
     /// <param name="cinemaId">Identificador do cinema.</param>
     /// <returns>Objeto DTO contendo os dados da sessão encontrada.</returns>
+    /// <response code="200">Caso o sessão seja encontrado</response>
+    /// <response code="404">Caso o sessão não seja encontrado</response>
     [HttpGet("{filmeId}/{cinemaId}", Name = "GetSessaoById")]
     public ActionResult<ReadSessaoDto> GetSessaoById(int filmeId, int cinemaId)
     {

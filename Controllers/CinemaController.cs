@@ -34,6 +34,7 @@ public class CinemaController : ControllerBase
     /// </summary>
     /// <param name="cinemaDto">Dados para criação do cinema.</param>
     /// <returns>Resultado da criação do cinema.</returns>
+    /// <response code="201">Caso inserção seja feita com sucesso</response>
     [HttpPost]
     public IActionResult AddCinema([FromBody] CreateCinemaDto cinemaDto)
     {
@@ -56,16 +57,31 @@ public class CinemaController : ControllerBase
     /// </summary>
     /// <param name="skip">Número de cinemas a pular</param>
     /// <param name="take">Número de cinemas a retornar</param>
+    /// <param name="enderecoId">retornar cinema pelo endereço</param>
     /// <returns>Lista de cinemas</returns>
     [HttpGet]
-    public IEnumerable<ReadCinemaDto> GetCinemas([FromQuery] int skip = 0, [FromQuery] int take = 10)
+    public IEnumerable<ReadCinemaDto> GetCinemas([FromQuery] int skip = 0, [FromQuery] int take = 10, [FromQuery] int? enderecoId = null)
     {
+        if(enderecoId.HasValue)
+        {
+            //consulta por RAW SQL
+            //var cinemasEndereco = _context.Cinemas.FromSqlRaw($"SELECT Id, Nome, EnderecoId FROM Cinemas WHERE EnderecoId = {enderecoId}").ToList();
+
+            //Consulta por Linq
+            var cinemasEndereco = _context.Cinemas
+                            .Skip(skip)
+                            .Take(take)
+                            .Where(c => c.EnderecoId == enderecoId)
+                            .ToList();
+
+            return _mapper.Map<List<ReadCinemaDto>>(cinemasEndereco);
+        }
+
         //retorna a lista de cinemas dentro de um intervalo para paginação
         var cinemas = _context.Cinemas
                         .Skip(skip)
                         .Take(take)
                         .ToList();
-
         return _mapper.Map<List<ReadCinemaDto>>(cinemas);
 
     }
@@ -75,6 +91,8 @@ public class CinemaController : ControllerBase
     /// </summary>
     /// <param name="id">Identificador do cinema.</param>
     /// <returns>Dados do cinema encontrado.</returns>
+    /// <response code="200">Caso o cinema seja encontrado</response>
+    /// <response code="404">Caso o cinema não seja encontrado</response>
     [HttpGet("{id}", Name = "GetCinemaById")]
     public IActionResult GetCinemaById(int id)
     {
